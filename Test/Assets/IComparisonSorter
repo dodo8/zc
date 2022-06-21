@@ -1,0 +1,8 @@
+using System.Collections.Generic;
+
+namespace Sorters.Comparison{
+    public interface IComparisonSorter<T>
+    {
+        void Sort(T[] array,IComparer<T> comparer)
+    }
+}
