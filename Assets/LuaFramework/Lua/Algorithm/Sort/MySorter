@@ -1,0 +1,51 @@
+
+
+function bubble_sort(arr)
+    local temp = nil
+
+    -- right to left
+    for i=1, #arr-1 do
+        for j = 1, #arr-i do
+            if arr[j] > arr[j+1] then
+                temp = arr[j]  --big at right
+                arr[j]  = arr[j+1]
+                arr[j+1] = temp
+            end
+        end
+    end
+
+end
+
+---select
+function select_sort(arr)
+    local temp = nil
+
+    for i= 1, #arr do
+        local index = 0
+        for j = i+1,#arr do
+            if arr[j]<arr[index] then
+                index = j
+            end
+        end
+        temp = arr[i]
+        arr[i] = arr[index]
+        arr[index] = temp
+    end
+end
+
+
+
+---insert
+
+function insert_sort(arr)
+    local preIndex,current
+    for i = 2,#arr do
+        preIndex = i-1
+        current = arr[i]
+        while(preIndex>=0 and arr[preIndex]>current) do  --一直进行平移，找出
+            arr[preIndex + 1] = arr[preIndex]
+            preIndex = preIndex-1
+        end
+        arr[preIndex+1] = current  --对空出格子的位置进行赋值
+    end
+end
