@@ -5,6 +5,7 @@ using UnityEngine;
 
 
 //写事件之前吧，一定要注意的一个点是，一个事件可能有多个执行者，所以是多播的
+/*
 public abstract class EventMethod
 {
     private string handle;
@@ -80,15 +81,78 @@ public class EventSystem
         }
     }
 
-    // Start is called before the first frame update
+}
+*/
+
+
+
+
+public class EventSystem
+{
+    public delegate void EventDelegate(params object[] parameters);
+    private readonly Dictionary<string,HashSet<EventDelegate>> events = new Dictionary<string, HashSet<EventDelegate>>();
+
+    public void Add(string eventId, EventDelegate action)//可以不接返回值么？
+    {
+        if(!events.ContainsKey(eventId))
+            events.Add(eventId, new HashSet<EventDelegate>());
+        if(events.TryGetValue(eventId, out var hashSet))
+        {
+            hashSet.Add(action);
+        }
+        //HashSet<EventMethod> hashSet;
+        //if(events.TryGetValue(eventMethod.Handle, out hashSet)) {
+        //      hashSet.Add(eventMethod);
+        //}
+    }
+
+    public void Remove(string eventId, EventDelegate action)
+    {
+        if(!events.TryGetValue(eventId, out var hashSet))
+        {
+            hashSet.Remove(action);
+            if(hashSet.Count <= 0)
+                events.Remove(eventId);
+        }
+    }
+
+    public void Trigger(string eventId, params object[] parameters)
+    {
+
+        if(events.TryGetValue(eventId, out var value))
+        {
+            foreach(var item in value)
+            {
+                item?.Invoke(parameters);
+            }
+        }
+    }
+}
+
+public class UnityEventSystemTest: MonoBehaviour
+{
     void Start()
+    {
+        EventSystem.Add();
+    }
+
+    public void BindEvent() {
+
+    }
+
+    public void UnBindEvent()
+    {
+
+    }
+
+    public void execute()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
+
+
+
